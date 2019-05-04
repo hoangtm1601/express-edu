@@ -4,9 +4,11 @@ module.exports = (app) => {
 
     app.get('/', main.home);
 
+    app.get('/products', main.index);
+
     app.get('/form', main.form);
 
-    app.post('/handle', main.authorize, main.handle);
+    app.post('/handle', main.handle);
 
     app.post('/articles/:article', (request, response) => {
         response.render('article', {

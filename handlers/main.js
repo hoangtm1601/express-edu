@@ -1,3 +1,11 @@
+const mongoClient = require("mongodb").MongoClient;
+const mongoDriver = require('../ultis/mongoDrive');
+
+exports.index = async (request, response) => {
+    let products = await mongoDriver.index(mongoClient);
+    response.render('products', {products: products});
+};
+
 exports.home = (request, response) => {
     let result = 'clgt';
     response.render('home', {result : result});
@@ -11,20 +19,16 @@ exports.form = (request, response) => {
     response.render('form', { csrf : 'csrf'});
 };
 
-exports.authorize = (request, response, next) => {
-    if (request.body.email === 'tnc.ck95@gmail.com') {
-        return next();
-    }
-
-    response.render('404');
-};
-
 exports.handle = (request, response) => {
     let name = request.body.name;
-    let email = request.body.email;
+    let price = request.body.price;
+    mongoDriver.insert(mongoClient, {
+        name: name,
+        price: price,
+    });
 
     response.json({
         name : name,
-        email : email,
+        price : price,
     });
 };
